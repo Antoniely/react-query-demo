@@ -5,8 +5,7 @@ function NewPost() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-
-  const { mutate, error, isLoading } = useNewPost();
+  const { mutate, error, isLoading, isSuccess, reset } = useNewPost();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,10 +64,12 @@ function NewPost() {
             Error creating the post: {error.message}
           </p>
         )}
-        {/* <div className="alert alert-success alert-dismissible" role="alert">
-          The post was saved successfuly
-          <button type="button" className="btn-close"></button>
-        </div> */}
+        {isSuccess && (
+          <div className="alert alert-success alert-dismissible" role="alert">
+            The post was saved successfuly
+            <button type="button" onClick={reset} className="btn-close"></button>
+          </div>
+        )}
       </form>
     </section>
   );

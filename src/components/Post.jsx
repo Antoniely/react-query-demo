@@ -1,27 +1,17 @@
-import { usePost } from "../hooks/usePosts";
+import { useDeletePost, usePost } from "../hooks/usePosts";
 
-export default function Post({ postId }) {
+export default function Post({ postId, setPostId }) {
   const { data: post, error, isLoading } = usePost(postId);
+  const {
+    mutate,
+    error: errorDelete,
+    isLoading: isLoadingDelete,
+  } = useDeletePost();
 
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // const [post, setPost] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       const data = await getPostById(postId);
-  //       setPost(data);
-  //       setError(null);
-  //     } catch (error) {
-  //       setError(error);
-  //       setPost(null);
-  //     }
-  //     setIsLoading(false);
-  //   };
-  //   fetchData();
-  // }, [postId]);
+  const handleDelete = () => {
+    setPostId(-1);
+    mutate(postId);
+  };
 
   if (isLoading) {
     return (
@@ -43,6 +33,20 @@ export default function Post({ postId }) {
     <article>
       <h1>{post.title}</h1>
       <p>{post.body}</p>
+      <button
+        disabled={isLoadingDelete}
+        onClick={() => handleDelete()}
+        className="btn btn-danger"
+      >
+        {isLoadingDelete ? (
+            <>
+              <span className="spinner-border spinner-border-sm"></span>{" "}
+              Deleting...
+            </>
+          ) : (
+            "Delete"
+          )}
+      </button>
     </article>
   );
 }

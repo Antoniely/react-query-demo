@@ -1,5 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { createNewPost, getPostById, getPosts } from "../api/posts";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createNewPost, deletePost, getPostById, getPosts } from "../api/posts";
 
 const key = "posts";
 
@@ -18,6 +18,18 @@ export const useNewPost = () => {
     onSuccess: (post) => {
       queryClient.setQueryData([key], (prevPosts) => prevPosts.concat(post));
       queryClient.invalidateQueries([key]);
+    },
+  });
+};
+
+export const useDeletePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(deletePost, {
+    onSuccess: (post) => {
+      // queryClient.setQueryData([key], (prevPosts) => prevPosts);
+      queryClient.invalidateQueries([key]);
+      
     },
   });
 };

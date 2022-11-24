@@ -16,3 +16,8 @@ export const createNewPost = async (post) => {
   const { data } = await axios.post(`${API}/posts`, post);
   return data;
 };
+
+export const deletePost = async (postId) => {
+  const { data } = await axios.delete(`${API}/posts/${postId}`);
+  return data;
+}
